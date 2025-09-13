@@ -3,6 +3,7 @@ package com.example.newsservice.service;
 import com.example.newsservice.dto.NewsDTO;
 import com.example.newsservice.entity.Category;
 import com.example.newsservice.entity.News;
+import com.example.newsservice.entity.User;
 import com.example.newsservice.exception.EntityNotFoundException;
 import com.example.newsservice.mapper.NewsMapper;
 import com.example.newsservice.repository.CategoryRepository;
@@ -45,11 +46,17 @@ public class NewsService {
         return newsDTO;
     }
 
-    public NewsDTO createNews(NewsDTO newsDTO) {
+    public NewsDTO createNews(NewsDTO newsDTO, Long userId) {
         News news = newsMapper.toEntity(newsDTO);
         Category category = categoryRepository.findById(newsDTO.getCategoryId())
                 .orElseThrow(() -> new EntityNotFoundException("Category not found"));
         news.setCategory(category);
+        
+        // Устанавливаем пользователя из аутентификации
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        news.setUser(user);
+        
         return newsMapper.toDto(newsRepository.save(news));
     }
 

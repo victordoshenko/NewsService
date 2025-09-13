@@ -34,10 +34,10 @@ public class CommentService {
         return commentRepository.findByNewsId(newsId, pageable).map(commentMapper::toDto);
     }
 
-    public CommentDTO createComment(Long newsId, CommentDTO commentDTO) {
+    public CommentDTO createComment(Long newsId, CommentDTO commentDTO, Long userId) {
         News news = newsRepository.findById(newsId)
                 .orElseThrow(() -> new EntityNotFoundException("News not found"));
-        User user = userRepository.findById(commentDTO.getUserId())
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
         Comment comment = commentMapper.toEntity(commentDTO);
         comment.setNews(news);

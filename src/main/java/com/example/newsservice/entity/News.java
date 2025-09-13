@@ -84,6 +84,14 @@ public class News {
         this.category = category;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public List<Comment> getComments() {
         return comments;
     }

@@ -26,6 +26,12 @@ public class CategoryService {
         return categoryRepository.findAll(pageable).map(categoryMapper::toDto);
     }
 
+    public CategoryDTO getCategoryById(Long id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+        return categoryMapper.toDto(category);
+    }
+
     public CategoryDTO createCategory(CategoryDTO categoryDTO) {
         Category category = categoryMapper.toEntity(categoryDTO);
         return categoryMapper.toDto(categoryRepository.save(category));

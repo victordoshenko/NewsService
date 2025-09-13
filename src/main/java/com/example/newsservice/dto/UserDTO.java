@@ -1,8 +1,11 @@
 package com.example.newsservice.dto;
 
+import com.example.newsservice.entity.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
+import java.util.Set;
 
 public class UserDTO {
 
@@ -28,6 +31,8 @@ public class UserDTO {
     @Size(max = 100)
     @Email
     private String email;
+
+    private Set<Role> roles;
 
     // Getters and Setters
 
@@ -77,5 +82,13 @@ public class UserDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
