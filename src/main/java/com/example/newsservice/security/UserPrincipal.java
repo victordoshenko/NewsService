@@ -1,9 +1,13 @@
 package com.example.newsservice.security;
 
+import com.example.newsservice.entity.Role;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class UserPrincipal implements UserDetails {
 
@@ -17,6 +21,20 @@ public class UserPrincipal implements UserDetails {
         this.username = username;
         this.password = password;
         this.authorities = authorities;
+    }
+
+    public static UserPrincipal create(com.example.newsservice.entity.User user) {
+        Set<Role> roles = user.getRoles();
+        Collection<GrantedAuthority> authorities = roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.name()))
+                .collect(Collectors.toList());
+
+        return new UserPrincipal(
+                user.getId(),
+                user.getUsername(),
+                user.getPassword(),
+                authorities
+        );
     }
 
     public Long getId() {
